@@ -1,0 +1,79 @@
+---
+export const prerender = false;
+
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { findProfileById } from "@/lib/profiles";
+
+const id = Astro.params.id ?? "";
+const profile = id ? await findProfileById(id) : null;
+
+if (!profile) {
+  Astro.response.status = 404;
+}
+---
+
+<BaseLayout
+  title={profile ? `${profile.name} | EV London` : "Profile not found | EV London"}
+  description={profile?.about_me ?? "Profile not found."}
+>
+  <main class="page-stack">
+    {profile ? (
+      <>
+      <article class="card profile-card profile-detail">
+        <div class="card-row">
+          {profile.photo_url ? (
+            <img
+              src={profile.photo_url}
+              alt={profile.name}
+              class="profile-photo profile-photo--lg"
+            />
+          ) : (
+            <span class="profile-photo-placeholder profile-photo--lg" aria-hidden="true">
+              <span class="profile-photo-placeholder-text">
+                {profile.name.slice(0, 1).toUpperCase()}
+              </span>
+            </span>
+          )}
+
+          <div class="card-copy">
+            <h1>{profile.name}</h1>
+            {profile.role ? <p class="profile-role">{profile.role}</p> : null}
+
+            <div class="meta">
+              {profile.twitter_url ? (
+                <a href={profile.twitter_url} target="_blank" rel="noreferrer">
+                  X / Twitter
+                </a>
+              ) : null}
+
+              {profile.linkedin_url ? (
+                <a href={profile.linkedin_url} target="_blank" rel="noreferrer">
+                  LinkedIn
+                </a>
+              ) : null}
+
+              {profile.public_email ? (
+                <a href={`mailto:${profile.public_email}`}>Email</a>
+              ) : null}
+            </div>
+          </div>
+        </div>
+
+        {profile.about_me ? (
+          <p class="profile-about">{profile.about_me}</p>
+        ) : null}
+      </article>
+
+      <a class="link" href="/">← Back to directory</a>
+      </>
+    ) : (
+      <>
+        <section class="page-head page-head--narrow">
+          <h1>Profile not found</h1>
+        </section>
+        <p class="muted">No matching profile for this link.</p>
+        <a class="link" href="/">Back to directory</a>
+      </>
+    )}
+  </main>
+</BaseLayout>

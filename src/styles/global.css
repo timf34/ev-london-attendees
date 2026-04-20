@@ -231,6 +231,70 @@ a {
   line-height: 1.4;
 }
 
+.profile-photo-link {
+  display: inline-flex;
+  line-height: 0;
+  text-decoration: none;
+  border-radius: 50%;
+}
+
+.profile-photo-link:hover .profile-photo,
+.profile-photo-link:focus .profile-photo,
+.profile-photo-link:hover .profile-photo-placeholder,
+.profile-photo-link:focus .profile-photo-placeholder {
+  border-color: var(--accent-dark);
+}
+
+.profile-name-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.profile-name-link:hover,
+.profile-name-link:focus {
+  color: var(--accent-dark);
+}
+
+.profile-detail .card-row {
+  align-items: center;
+}
+
+.profile-photo--lg {
+  width: 7.5rem;
+  height: 7.5rem;
+}
+
+.profile-detail {
+  display: grid;
+  gap: 1.25rem;
+  padding: 1.5rem 1.4rem;
+}
+
+.profile-detail h1 {
+  font-family: "Gliko Modern S", Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  font-size: 2rem;
+  line-height: 1.05;
+}
+
+.profile-about {
+  color: var(--text);
+  line-height: 1.65;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 700px) {
+  .profile-photo--lg {
+    width: 5rem;
+    height: 5rem;
+  }
+
+  .profile-detail h1 {
+    font-size: 1.6rem;
+  }
+}
+
 .meta {
   display: flex;
   flex-wrap: wrap;

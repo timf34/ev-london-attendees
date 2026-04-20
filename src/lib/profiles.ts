@@ -84,6 +84,23 @@ export async function listProfilesPage(
   };
 }
 
+export async function findProfileById(id: string): Promise<Profile | null> {
+  const supabase = getServerSupabaseClient();
+  const { data, error } = await supabase
+    .from("profiles")
+    .select(
+      "id, name, about_me, role, photo_url, linkedin_url, twitter_url, public_email, edit_secret_hash, created_at, updated_at"
+    )
+    .eq("id", id)
+    .maybeSingle();
+
+  if (error) {
+    throw new Error(`Failed to find profile: ${error.message}`);
+  }
+
+  return data ?? null;
+}
+
 export async function findProfileByEditSecretHash(
   editSecretHash: string
 ): Promise<Profile | null> {

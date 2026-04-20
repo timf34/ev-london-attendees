@@ -84,23 +84,29 @@ function hrefForPage(page: number) {
           {profiles.map((profile) => (
             <article class="card profile-card">
               <div class="card-row">
-                {profile.photo_url ? (
-                  <img
-                    src={profile.photo_url}
-                    alt={profile.name}
-                    class="profile-photo"
-                    loading="lazy"
-                  />
-                ) : (
-                  <span class="profile-photo-placeholder" aria-hidden="true">
-                    <span class="profile-photo-placeholder-text">
-                      {profile.name.slice(0, 1).toUpperCase()}
+                <a class="profile-photo-link" href={`/p/${profile.id}`}>
+                  {profile.photo_url ? (
+                    <img
+                      src={profile.photo_url}
+                      alt={profile.name}
+                      class="profile-photo"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <span class="profile-photo-placeholder" aria-hidden="true">
+                      <span class="profile-photo-placeholder-text">
+                        {profile.name.slice(0, 1).toUpperCase()}
+                      </span>
                     </span>
-                  </span>
-                )}
+                  )}
+                </a>
 
                 <div class="card-copy">
-                  <h2>{profile.name}</h2>
+                  <h2>
+                    <a class="profile-name-link" href={`/p/${profile.id}`}>
+                      {profile.name}
+                    </a>
+                  </h2>
                   {profile.role ? <p class="profile-role">{profile.role}</p> : null}
 
                   <div class="meta">
