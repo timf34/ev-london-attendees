@@ -5,6 +5,7 @@ export type Profile = {
   id: string;
   name: string;
   about_me: string;
+  role: string | null;
   photo_url: string | null;
   linkedin_url: string | null;
   twitter_url: string | null;
@@ -25,7 +26,7 @@ export async function listProfiles(): Promise<Profile[]> {
   const { data, error } = await supabase
     .from("profiles")
     .select(
-      "id, name, about_me, photo_url, linkedin_url, twitter_url, public_email, edit_secret_hash, created_at, updated_at"
+      "id, name, about_me, role, photo_url, linkedin_url, twitter_url, public_email, edit_secret_hash, created_at, updated_at"
     )
     .order("created_at", { ascending: false });
 
@@ -55,7 +56,7 @@ export async function listProfilesPage(
   let query = supabase
     .from("profiles")
     .select(
-      "id, name, about_me, photo_url, linkedin_url, twitter_url, public_email, edit_secret_hash, created_at, updated_at",
+      "id, name, about_me, role, photo_url, linkedin_url, twitter_url, public_email, edit_secret_hash, created_at, updated_at",
       { count: "exact" }
     )
     .order("created_at", { ascending: false })
@@ -90,7 +91,7 @@ export async function findProfileByEditSecretHash(
   const { data, error } = await supabase
     .from("profiles")
     .select(
-      "id, name, about_me, photo_url, linkedin_url, twitter_url, public_email, edit_secret_hash, created_at, updated_at"
+      "id, name, about_me, role, photo_url, linkedin_url, twitter_url, public_email, edit_secret_hash, created_at, updated_at"
     )
     .eq("edit_secret_hash", editSecretHash)
     .maybeSingle();

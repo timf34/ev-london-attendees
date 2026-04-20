@@ -11,6 +11,7 @@ import { generateEditSecret, hashEditSecret } from "@/lib/secrets";
 type ProfileFormValues = {
   name: string;
   aboutMe: string;
+  role: string | null;
   linkedinUrl: string | null;
   twitterUrl: string | null;
   publicEmail: string | null;
@@ -81,6 +82,7 @@ function normalizeTwitterInput(value: string | null): string | null {
 function parseForm(formData: FormData): ProfileFormValues {
   const name = getText(formData, "name");
   const aboutMe = getText(formData, "about_me");
+  const role = optional(getText(formData, "role"));
   const linkedinUrl = normalizeLinkedInInput(optional(getText(formData, "linkedin_url")));
   const twitterUrl = normalizeTwitterInput(optional(getText(formData, "twitter_url")));
   const publicEmail = optional(getText(formData, "public_email"));
@@ -89,6 +91,7 @@ function parseForm(formData: FormData): ProfileFormValues {
   return {
     name,
     aboutMe,
+    role,
     linkedinUrl,
     twitterUrl,
     publicEmail,
@@ -132,6 +135,7 @@ export async function createProfile(formData: FormData): Promise<string> {
     .insert({
       name: values.name,
       about_me: values.aboutMe,
+      role: values.role,
       linkedin_url: values.linkedinUrl,
       twitter_url: values.twitterUrl,
       public_email: values.publicEmail,
@@ -189,6 +193,7 @@ export async function saveProfile(secret: string, formData: FormData): Promise<v
     .update({
       name: values.name,
       about_me: values.aboutMe,
+      role: values.role,
       linkedin_url: values.linkedinUrl,
       twitter_url: values.twitterUrl,
       public_email: values.publicEmail,

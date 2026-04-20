@@ -225,6 +225,12 @@ a {
   line-height: 1.6;
 }
 
+.profile-role {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
 .meta {
   display: flex;
   flex-wrap: wrap;

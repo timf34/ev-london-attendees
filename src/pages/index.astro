@@ -101,7 +101,7 @@ function hrefForPage(page: number) {
 
                 <div class="card-copy">
                   <h2>{profile.name}</h2>
-                  <p>{profile.about_me}</p>
+                  {profile.role ? <p class="profile-role">{profile.role}</p> : null}
 
                   <div class="meta">
                     {profile.linkedin_url ? (
