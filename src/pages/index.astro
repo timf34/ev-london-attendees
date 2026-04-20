@@ -58,7 +58,15 @@ function hrefForPage(page: number) {
         placeholder="Search attendees by name"
         aria-label="Search attendees"
       />
-      <button type="submit">Search</button>
+      <button type="submit" class="search-submit" aria-label="Search attendees">
+        <span class="search-submit-icon" aria-hidden="true">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="8.5" cy="8.5" r="5.5"></circle>
+            <path d="M12.5 12.5L17 17"></path>
+          </svg>
+        </span>
+        <span class="search-submit-label">Search</span>
+      </button>
       {search ? (
         <a class="button secondary" href="/">Clear</a>
       ) : null}

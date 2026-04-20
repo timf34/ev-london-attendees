@@ -123,21 +123,21 @@ a {
 
 .button.site-header-cta {
   white-space: nowrap;
-  padding: 0.8rem 1.5rem;
-  border-width: 0.125rem;
+  padding: 0.7rem 1.25rem;
+  border-width: 0.09rem;
   border-radius: 0;
-  border-color: rgba(0, 89, 97, 0.18);
-  background: var(--bg);
-  color: var(--accent-dark);
+  border-color: rgba(243, 249, 248, 0.55);
+  background: transparent;
+  color: #f3f9f8;
   box-shadow: none;
   transition: border-color 180ms ease, background-color 180ms ease, color 180ms ease;
 }
 
 .button.site-header-cta:hover,
 .button.site-header-cta:focus {
-  border-color: var(--accent);
-  background: var(--accent);
-  color: #fdfbf7;
+  border-color: var(--bg);
+  background: var(--bg);
+  color: var(--accent-dark);
 }
 
 .page-stack {
@@ -422,6 +422,25 @@ code {
   align-items: center;
 }
 
+.search-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.search-submit-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+}
+
+.search-submit-icon svg {
+  width: 1rem;
+  height: 1rem;
+}
+
 .search-form input {
   flex: 1 1 18rem;
   min-width: 0;
@@ -494,32 +513,85 @@ code {
   button,
   .button,
   .button.site-header-cta {
-    padding: 0.62rem 1rem;
+    padding: 0.58rem 0.95rem;
     font-size: 0.72rem;
     letter-spacing: 0.05em;
   }
 
   .site-header-inner {
-    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
+  }
+
+  .site-brand-title {
+    font-size: 1.35rem;
+  }
+
+  .site-brand-meta {
+    font-size: 0.62rem;
+  }
+
+  .wrapper {
+    padding: 1.5rem 1rem 2.25rem;
+  }
+
+  .search-form {
+    gap: 0.5rem;
+    flex-wrap: nowrap;
+    align-items: stretch;
+  }
+
+  .search-form input {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .search-submit {
+    gap: 0;
+    min-width: 2.75rem;
+    padding-inline: 0.75rem;
+    flex: 0 0 auto;
+  }
+
+  .search-submit-label {
+    display: none;
   }
 
   .site-footer-inner {
     flex-direction: column;
     align-items: flex-start;
+    padding: 1.15rem 1rem 1.35rem;
   }
 
-  .wrapper {
-    padding-top: 1.5rem;
+  .profile-card {
+    padding: 0.95rem 1rem;
   }
 
   .card-row {
-    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  .card-copy {
+    gap: 0.5rem;
+  }
+
+  .card-copy h2 {
+    font-size: 1.3rem;
   }
 
   .profile-photo,
   .profile-photo-placeholder {
-    width: 4.8rem;
-    height: 4.8rem;
+    width: 3.6rem;
+    height: 3.6rem;
+  }
+
+  .profile-photo-placeholder-text {
+    font-size: 1.4rem;
+  }
+
+  .meta {
+    gap: 0.55rem 0.9rem;
+    font-size: 0.78rem;
   }
 
   .form,
