@@ -104,15 +104,15 @@ function hrefForPage(page: number) {
                   {profile.role ? <p class="profile-role">{profile.role}</p> : null}
 
                   <div class="meta">
-                    {profile.linkedin_url ? (
-                      <a href={profile.linkedin_url} target="_blank" rel="noreferrer">
-                        LinkedIn
-                      </a>
-                    ) : null}
-
                     {profile.twitter_url ? (
                       <a href={profile.twitter_url} target="_blank" rel="noreferrer">
                         X / Twitter
+                      </a>
+                    ) : null}
+
+                    {profile.linkedin_url ? (
+                      <a href={profile.linkedin_url} target="_blank" rel="noreferrer">
+                        LinkedIn
                       </a>
                     ) : null}
 
