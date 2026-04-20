@@ -14,6 +14,12 @@ export type Profile = {
   updated_at: string;
 };
 
+type ListProfilesPageOptions = {
+  search?: string;
+  page?: number;
+  pageSize?: number;
+};
+
 export async function listProfiles(): Promise<Profile[]> {
   const supabase = getServerSupabaseClient();
   const { data, error } = await supabase
@@ -34,6 +40,47 @@ export async function listProfiles(): Promise<Profile[]> {
   }
 
   return data ?? [];
+}
+
+export async function listProfilesPage(
+  options: ListProfilesPageOptions = {}
+): Promise<{ profiles: Profile[]; totalCount: number }> {
+  const supabase = getServerSupabaseClient();
+  const page = Math.max(1, options.page ?? 1);
+  const pageSize = Math.max(1, options.pageSize ?? 12);
+  const from = (page - 1) * pageSize;
+  const to = from + pageSize - 1;
+  const search = options.search?.trim() ?? "";
+
+  let query = supabase
+    .from("profiles")
+    .select(
+      "id, name, about_me, photo_url, linkedin_url, twitter_url, public_email, edit_secret_hash, created_at, updated_at",
+      { count: "exact" }
+    )
+    .order("created_at", { ascending: false })
+    .range(from, to);
+
+  if (search) {
+    query = query.ilike("name", `%${search}%`);
+  }
+
+  const { data, error, count } = await query;
+
+  if (error) {
+    if ((error as { code?: string }).code === "42P01") {
+      throw new Error(
+        "Database table missing: public.profiles was not found. Run supabase/schema.sql in your Supabase SQL editor."
+      );
+    }
+
+    throw new Error(`Failed to load profiles: ${error.message}`);
+  }
+
+  return {
+    profiles: data ?? [],
+    totalCount: count ?? 0,
+  };
 }
 
 export async function findProfileByEditSecretHash(

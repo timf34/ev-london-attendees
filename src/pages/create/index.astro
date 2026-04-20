@@ -7,19 +7,26 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 const error = Astro.url.searchParams.get("error");
 ---
 
-<BaseLayout title="Create Profile">
-  <main>
-    <h1>Create profile</h1>
-    <p class="notice">
-      <strong>X / Twitter photo autofill works automatically.</strong> LinkedIn
-      photo autofill does not currently work reliably, so upload a photo yourself
-      if you want one and do not want to rely on X.
-    </p>
+<BaseLayout title="Create Profile | EV London">
+  <main class="page-stack">
+    <section class="page-head page-head--narrow">
+      <h1>Create your profile</h1>
+    </section>
+    <section class="notice notice-tip">
+      <p>
+        <strong>Include your X link to auto-populate your profile photo.</strong>
+        Otherwise, upload one yourself.
+      </p>
+      <p>
+        <strong>Save your private edit link after creating your profile.</strong>
+        You will need it later if you want to edit or delete your profile.
+      </p>
+    </section>
     <ProfileForm
       action="/api/profiles/create"
       submitLabel="Create profile"
       photoLabel="Profile picture (optional)"
-      photoNote="If you add an X / Twitter URL and skip upload, we will try to use your X profile photo automatically."
+      photoNote="If you add an X / Twitter URL and skip upload, we will try to use that profile photo automatically."
       error={error}
     />
   </main>

@@ -7,8 +7,8 @@ interface Props {
 }
 
 const {
-  title = "Attendee Directory",
-  description = "Simple public attendee directory",
+  title = "EV London Attendee Directory",
+  description = "EV London attendee directory inspired by Emergent Ventures",
 } = Astro.props;
 ---
 
@@ -21,8 +21,39 @@ const {
     <title>{title}</title>
   </head>
   <body>
-    <div class="wrapper">
-      <slot />
+    <div class="site-shell">
+      <header class="site-header">
+        <div class="site-header-inner">
+          <a class="site-brand" href="/">
+            <span class="site-brand-title">EV London Unconference</span>
+            <span class="site-brand-meta">April 2026</span>
+          </a>
+          <a class="button secondary site-header-link" href="/create">Create profile</a>
+        </div>
+      </header>
+
+      <div class="wrapper">
+        <slot />
+      </div>
+
+      <footer class="site-footer">
+        <div class="site-footer-inner">
+          <p class="site-footer-title">Emergent Ventures · London</p>
+          <a
+            class="site-credit"
+            href="https://timfarrelly.com/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            made by tim
+          </a>
+        </div>
+      </footer>
     </div>
+    <script is:inline>
+      console.log(
+        "Hello there! Looking for source code? 1. I got you: https://github.com/timf34/ev-london-attendees, 2. We might get along: timf34@gmail.com"
+      );
+    </script>
   </body>
 </html>

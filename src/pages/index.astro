@@ -2,72 +2,145 @@
 export const prerender = false;
 
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { listProfiles } from "@/lib/profiles";
+import { listProfilesPage } from "@/lib/profiles";
 
 let profiles = [];
 let loadError: string | null = null;
 const deleted = Astro.url.searchParams.get("deleted") === "1";
+const search = (Astro.url.searchParams.get("q") ?? "").trim();
+const pageParam = Number.parseInt(Astro.url.searchParams.get("page") ?? "1", 10);
+const currentPage = Number.isFinite(pageParam) && pageParam > 0 ? pageParam : 1;
+const pageSize = 12;
+let totalCount = 0;
+let totalPages = 1;
 
 try {
-  profiles = await listProfiles();
+  const result = await listProfilesPage({
+    search,
+    page: currentPage,
+    pageSize,
+  });
+  profiles = result.profiles;
+  totalCount = result.totalCount;
+  totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
 } catch (error) {
   loadError = error instanceof Error ? error.message : "Unable to load profiles.";
 }
+
+function hrefForPage(page: number) {
+  const params = new URLSearchParams();
+
+  if (search) {
+    params.set("q", search);
+  }
+
+  if (page > 1) {
+    params.set("page", String(page));
+  }
+
+  const query = params.toString();
+  return query ? `/?${query}` : "/";
+}
 ---
 
-<BaseLayout title="Attendee Directory">
-  <main>
-    <header class="toolbar">
-      <h1>Attendee Directory</h1>
-      <a class="link" href="/create">Create profile</a>
-    </header>
-
+<BaseLayout
+  title="EV London | Attendee Directory"
+  description="Public attendee directory for the EV London edition of Emergent Ventures."
+>
+  <main class="page-stack page-stack--compact">
     {deleted ? <p class="notice success">Profile deleted.</p> : null}
 
-    {loadError ? (
-      <p class="muted">{loadError}</p>
-    ) : profiles.length === 0 ? (
-      <p class="muted">No profiles yet.</p>
-    ) : (
-      <section class="grid">
-        {profiles.map((profile) => (
-          <article class="card card-row">
-            {profile.photo_url ? (
-              <img
-                src={profile.photo_url}
-                alt={profile.name}
-                class="profile-photo"
-                loading="lazy"
-              />
-            ) : (
-              <span class="profile-photo-placeholder" aria-hidden="true"></span>
-            )}
+    <form method="GET" action="/" class="search-form">
+      <input
+        type="search"
+        name="q"
+        value={search}
+        placeholder="Search attendees by name"
+        aria-label="Search attendees"
+      />
+      <button type="submit">Search</button>
+      {search ? (
+        <a class="button secondary" href="/">Clear</a>
+      ) : null}
+    </form>
 
-            <div class="card-copy">
-              <h2>{profile.name}</h2>
-              <p>{profile.about_me}</p>
+    <section class="attendee-list">
+      {loadError ? (
+        <p class="error">{loadError}</p>
+      ) : profiles.length === 0 ? (
+        <article class="card empty-state">
+          <h2>{search ? "No attendees found" : "No profiles yet"}</h2>
+        </article>
+      ) : (
+        <section class="grid">
+          {profiles.map((profile) => (
+            <article class="card profile-card">
+              <div class="card-row">
+                {profile.photo_url ? (
+                  <img
+                    src={profile.photo_url}
+                    alt={profile.name}
+                    class="profile-photo"
+                    loading="lazy"
+                  />
+                ) : (
+                  <span class="profile-photo-placeholder" aria-hidden="true">
+                    <span class="profile-photo-placeholder-text">
+                      {profile.name.slice(0, 1).toUpperCase()}
+                    </span>
+                  </span>
+                )}
 
-              <div class="meta">
-                {profile.linkedin_url ? (
-                  <a href={profile.linkedin_url} target="_blank" rel="noreferrer">
-                    LinkedIn
-                  </a>
-                ) : null}
+                <div class="card-copy">
+                  <h2>{profile.name}</h2>
+                  <p>{profile.about_me}</p>
 
-                {profile.twitter_url ? (
-                  <a href={profile.twitter_url} target="_blank" rel="noreferrer">
-                    X / Twitter
-                  </a>
-                ) : null}
+                  <div class="meta">
+                    {profile.linkedin_url ? (
+                      <a href={profile.linkedin_url} target="_blank" rel="noreferrer">
+                        LinkedIn
+                      </a>
+                    ) : null}
 
-                {profile.public_email ? (
-                  <a href={`mailto:${profile.public_email}`}>Email</a>
-                ) : null}
+                    {profile.twitter_url ? (
+                      <a href={profile.twitter_url} target="_blank" rel="noreferrer">
+                        X / Twitter
+                      </a>
+                    ) : null}
+
+                    {profile.public_email ? (
+                      <a href={`mailto:${profile.public_email}`}>Email</a>
+                    ) : null}
+                  </div>
+                </div>
               </div>
-            </div>
-          </article>
-        ))}
-      </section>
-    )}
+            </article>
+          ))}
+        </section>
+      )}
+    </section>
+
+    {!loadError && totalPages > 1 ? (
+      <nav class="pagination" aria-label="Pagination">
+        <a
+          class={`button secondary ${currentPage <= 1 ? "is-disabled" : ""}`}
+          href={currentPage <= 1 ? undefined : hrefForPage(currentPage - 1)}
+          aria-disabled={currentPage <= 1}
+        >
+          Previous
+        </a>
+        <span class="pagination-status">
+          Page {Math.min(currentPage, totalPages)} of {totalPages}
+          {totalCount ? ` · ${totalCount} attendees` : ""}
+        </span>
+        <a
+          class={`button secondary ${currentPage >= totalPages ? "is-disabled" : ""}`}
+          href={currentPage >= totalPages ? undefined : hrefForPage(currentPage + 1)}
+          aria-disabled={currentPage >= totalPages}
+        >
+          Next
+        </a>
+      </nav>
+    ) : null}
   </main>
 </BaseLayout>

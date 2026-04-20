@@ -6,6 +6,7 @@ dist/
 
 .env.local
 .env.*.local
+agents.md
 
 .codex-astro.out
 .codex-astro.err

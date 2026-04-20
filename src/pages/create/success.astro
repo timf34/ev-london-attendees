@@ -8,18 +8,23 @@ const secret = Astro.url.searchParams.get("secret");
 const editPath = secret ? `/edit/${secret}` : null;
 ---
 
-<BaseLayout title="Profile Created">
-  <main>
+<BaseLayout title="Profile Created | EV London">
+  <main class="page-stack">
     {editPath ? (
       <>
-        <h1>Your profile is live.</h1>
+        <section class="page-head page-head--narrow">
+          <h1>Your profile is live.</h1>
+        </section>
         <p>
           Private edit link:
           <br />
           <code>{editPath}</code>
         </p>
         <CopyEditLink editPath={editPath} />
-        <p class="small">Warning: anyone with this link can edit this profile.</p>
+        <p class="notice">
+          <strong>Keep this link.</strong> You will need it to edit or delete
+          your profile later. Anyone with this link can edit this profile.
+        </p>
         <div class="actions">
           <a class="button" href={editPath}>Open edit page</a>
           <a class="button secondary" href="/">Back to directory</a>
@@ -27,7 +32,9 @@ const editPath = secret ? `/edit/${secret}` : null;
       </>
     ) : (
       <>
-        <h1>Profile created</h1>
+        <section class="page-head page-head--narrow">
+          <h1>Profile created</h1>
+        </section>
         <p>Missing edit secret.</p>
         <a class="link" href="/">Go home</a>
       </>
