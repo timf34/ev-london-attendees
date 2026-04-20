@@ -1,0 +1,36 @@
+---
+export const prerender = false;
+
+import CopyEditLink from "@/components/CopyEditLink.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const secret = Astro.url.searchParams.get("secret");
+const editPath = secret ? `/edit/${secret}` : null;
+---
+
+<BaseLayout title="Profile Created">
+  <main>
+    {editPath ? (
+      <>
+        <h1>Your profile is live.</h1>
+        <p>
+          Private edit link:
+          <br />
+          <code>{editPath}</code>
+        </p>
+        <CopyEditLink editPath={editPath} />
+        <p class="small">Warning: anyone with this link can edit this profile.</p>
+        <div class="actions">
+          <a class="button" href={editPath}>Open edit page</a>
+          <a class="button secondary" href="/">Back to directory</a>
+        </div>
+      </>
+    ) : (
+      <>
+        <h1>Profile created</h1>
+        <p>Missing edit secret.</p>
+        <a class="link" href="/">Go home</a>
+      </>
+    )}
+  </main>
+</BaseLayout>

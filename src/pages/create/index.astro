@@ -1,0 +1,26 @@
+---
+export const prerender = false;
+
+import ProfileForm from "@/components/ProfileForm.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const error = Astro.url.searchParams.get("error");
+---
+
+<BaseLayout title="Create Profile">
+  <main>
+    <h1>Create profile</h1>
+    <p class="notice">
+      <strong>X / Twitter photo autofill works automatically.</strong> LinkedIn
+      photo autofill does not currently work reliably, so upload a photo yourself
+      if you want one and do not want to rely on X.
+    </p>
+    <ProfileForm
+      action="/api/profiles/create"
+      submitLabel="Create profile"
+      photoLabel="Profile picture (optional)"
+      photoNote="If you add an X / Twitter URL and skip upload, we will try to use your X profile photo automatically."
+      error={error}
+    />
+  </main>
+</BaseLayout>

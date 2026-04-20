@@ -1,0 +1,84 @@
+---
+interface FormValues {
+  name?: string;
+  about_me?: string;
+  linkedin_url?: string | null;
+  twitter_url?: string | null;
+  public_email?: string | null;
+}
+
+interface Props {
+  action: string;
+  submitLabel: string;
+  photoLabel: string;
+  photoNote: string;
+  error?: string | null;
+  values?: FormValues;
+}
+
+const {
+  action,
+  submitLabel,
+  photoLabel,
+  photoNote,
+  error = null,
+  values = {},
+} = Astro.props;
+---
+
+{error ? <p class="error">{error}</p> : null}
+
+<form method="POST" action={action} class="form" enctype="multipart/form-data">
+  <div class="field">
+    <label for="name">Name</label>
+    <input id="name" name="name" required value={values.name ?? ""} />
+  </div>
+
+  <div class="field">
+    <label for="about_me">About me</label>
+    <textarea id="about_me" name="about_me" required>{values.about_me ?? ""}</textarea>
+  </div>
+
+  <div class="field">
+    <label for="photo">{photoLabel}</label>
+    <input id="photo" name="photo" type="file" accept="image/*" />
+    <p class="small">{photoNote}</p>
+  </div>
+
+  <div class="field">
+    <label for="linkedin_url">LinkedIn URL or slug (optional)</label>
+    <input
+      id="linkedin_url"
+      name="linkedin_url"
+      type="text"
+      value={values.linkedin_url ?? ""}
+      placeholder="https://www.linkedin.com/in/your-name or your-name"
+    />
+  </div>
+
+  <div class="field">
+    <label for="twitter_url">X / Twitter URL or username (optional)</label>
+    <input
+      id="twitter_url"
+      name="twitter_url"
+      type="text"
+      value={values.twitter_url ?? ""}
+      placeholder="https://x.com/your_name or @your_name"
+    />
+  </div>
+
+  <div class="field">
+    <label for="public_email">Public email (optional)</label>
+    <input
+      id="public_email"
+      name="public_email"
+      type="email"
+      value={values.public_email ?? ""}
+    />
+  </div>
+
+  <div class="actions">
+    <button type="submit">{submitLabel}</button>
+    <a class="button secondary" href="/">Back</a>
+  </div>
+</form>

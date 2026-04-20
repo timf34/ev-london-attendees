@@ -1,0 +1,29 @@
+---
+interface Props {
+  editPath: string;
+}
+
+const { editPath } = Astro.props;
+---
+
+<button type="button" data-copy-edit-link data-edit-path={editPath}>
+  Copy edit link
+</button>
+
+<script is:inline>
+  const button = document.querySelector("[data-copy-edit-link]");
+
+  if (button instanceof HTMLButtonElement) {
+    button.addEventListener("click", async () => {
+      const editPath = button.dataset.editPath;
+      if (!editPath) return;
+
+      const fullUrl = new URL(editPath, window.location.origin).toString();
+      await navigator.clipboard.writeText(fullUrl);
+      button.textContent = "Copied";
+      window.setTimeout(() => {
+        button.textContent = "Copy edit link";
+      }, 1000);
+    });
+  }
+</script>
