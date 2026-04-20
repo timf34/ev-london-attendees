@@ -317,10 +317,10 @@ function normalizeLinkedInProfileUrl(value: string | null): string | null {
 }
 
 async function deriveAvatarSourceFromSocial(
-  linkedinUrl: string | null,
+  _linkedinUrl: string | null,
   twitterUrl: string | null
 ): Promise<string | null> {
-  const directImage = safePublicImageUrl(twitterUrl) || safePublicImageUrl(linkedinUrl);
+  const directImage = safePublicImageUrl(twitterUrl);
   if (directImage) return directImage;
 
   if (twitterUrl) {
@@ -332,23 +332,9 @@ async function deriveAvatarSourceFromSocial(
     if (linkedImage) return linkedImage;
   }
 
-  if (linkedinUrl) {
-    const normalizedLinkedIn = normalizeLinkedInProfileUrl(linkedinUrl);
-    const linkedImage = await resolveSocialImageFromPage(
-      normalizedLinkedIn || linkedinUrl
-    );
-
-    if (linkedImage) return linkedImage;
-  }
-
   const twitterHandle = socialHandleFromTwitterUrl(twitterUrl);
   if (twitterHandle) {
     return `https://unavatar.io/x/${encodeURIComponent(twitterHandle)}`;
-  }
-
-  const linkedInHandle = socialHandleFromLinkedInUrl(linkedinUrl);
-  if (linkedInHandle) {
-    return `https://unavatar.io/linkedin/${encodeURIComponent(linkedInHandle)}`;
   }
 
   return null;
